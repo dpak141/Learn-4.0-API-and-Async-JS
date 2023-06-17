@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+nav {
+    background-color: beige;
+    text-align: center;
+    font-size: 3rem;
+}
+
+#blog-list {
+    padding: 1rem;
+}

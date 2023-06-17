@@ -21,3 +21,8 @@ button {
     cursor: pointer;
     border: none;
 }
+
+.fun {
+    background: rgb(131, 58, 180);
+    background: linear-gradient(0deg, rgba(131, 58, 180, 1) 0%, rgb(136, 44, 44) 50%, rgba(252, 176, 69, 1) 100%);
+}
