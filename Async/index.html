@@ -4,12 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>CallBack</title>
 </head>
 
 <body>
-    <button id="new-deck">Click Me</button>
+    <div class="top">
+        <button id="new-deck">Shuffle Deck</button>
+        <p id="remaining"></p>
+    </div>
+
+    <h2 id="header">Game of WAR</h2>
+    <h3 id="computer-score">Computer Score:</h3>
+    <div id="cards">
+        <div class="card-slots">
+        </div>
+        <div class="card-slots">
+        </div>
+    </div>
+    <h3 id="my-score">My Score:</h3>
+
+    <button id="draw-cards" class="draw">Draw</button>
 </body>
 <script src="index.js"></script>
 

@@ -1,33 +1,85 @@
-// const btnEl = document.getElementById("new-deck");
+let deckId;
+let computerScore = 0;
+let myScore = 0;
+const cardContainer = document.getElementById("cards");
+const newDeckBtn = document.getElementById("new-deck");
+const drawCardBtn = document.getElementById("draw-cards");
+const headerEl = document.getElementById("header");
+const remainingEl = document.getElementById("remaining");
+const computerScoreEl = document.getElementById("computer-score");
+const myScoreEl = document.getElementById("my-score");
 
-// function handelClick() {
-//   fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
-//     .then((response) => response.json())
-//     .then((data) => console.log(data));
-// }
+function handelClick() {
+  fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      deckId = data.deck_id;
+    });
+}
 
-// btnEl.addEventListener("click", handelClick);
+newDeckBtn.addEventListener("click", handelClick);
 
-// // setTimeOut ------------------------------
-// function callback() {
-//   console.log("I finally ran");
-// }
+drawCardBtn.addEventListener("click", () => {
+  fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`)
+    .then((res) => res.json())
+    .then((data) => {
+      remainingEl.textContent = `Remaining Cards: ${data.remaining}`;
 
-// setTimeout(callback, 2000);
+      cardContainer.children[0].innerHTML = `
+      <img src=${data.cards[0].image} class="card" />`;
 
-document.getElementById("new-deck").addEventListener("click", function () {
-  console.log("Clicked");
+      cardContainer.children[1].innerHTML = `
+      <img src=${data.cards[1].image} class="card" />`;
+
+      const winnerText = determineCardWinner(data.cards[0], data.cards[1]);
+      console.log(winnerText);
+
+      headerEl.textContent = winnerText;
+
+      if (data.remaining === 0) {
+        drawCardBtn.disabled = true;
+        if (computerScore > myScore) {
+          headerEl.textContent = "Computer Won the Game!";
+        } else if (myScore > computerScore) {
+          headerEl.textContent = "You Won the Game!";
+        } else {
+          headerEl.textContent = "WAR";
+        }
+      }
+    });
 });
 
-const voters = [
-  { name: "Deepak", email: "deepak@gmail.com", voted: true },
-  { name: "Mahi", email: "mahi@gmail.com", voted: true },
-  { name: "Neha", email: "neha@gmail.com", voted: false },
-  { name: "Human", email: "human@gmail.com", voted: true },
-  { name: "Animal", email: "animal@gmail.com", voted: false },
-];
+function determineCardWinner(card1, card2) {
+  const valueOption = [
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "JACK",
+    "QUEEN",
+    "KING",
+    "ACE",
+  ];
+  const card1valueIndex = valueOption.indexOf(card1.value);
+  const card2valueIndex = valueOption.indexOf(card2.value);
+  console.log("Card 1:", card1valueIndex);
+  console.log("Card 2:", card2valueIndex);
 
-let voterEmail = voters
-  .filter((voter) => voter.voted)
-  .map((voter) => voter.email);
-console.log(voterEmail);
+  if (card1valueIndex > card2valueIndex) {
+    computerScore++;
+    computerScoreEl.textContent = `Computer Score:${computerScore}`;
+    return "Computer Wins!";
+  } else if (card2valueIndex > card1valueIndex) {
+    myScore++;
+    myScoreEl.textContent = `My Score:${myScore}`;
+    return "You Win!";
+  } else {
+    return "WAR!";
+  }
+}
